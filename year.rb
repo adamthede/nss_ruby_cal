@@ -22,12 +22,12 @@ class Year
     year_screen.each do |item|
       i = 0
       until item[0][i].nil? && item[1][i].nil? && item[2][i].nil?
-        year_display << item[0][i] + "  " + item[1][i] + "  " + item[2][i]
+        year_display << item[0][i] + "  " + item[1][i] + "  " + item[2][i].rstrip
         i += 1
       end
     end
     year_display.unshift("\n")
-    year_display.unshift("#{@year}".center(62))
+    year_display.unshift("#{@year}".center(62).rstrip)
     return year_display
   end
 

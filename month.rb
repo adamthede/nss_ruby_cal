@@ -74,14 +74,14 @@ class Month
     end
     new_final_calendar = []
     final_calendar.each do |line|
-      new_final_calendar << line.ljust(20)
+      new_final_calendar << line.ljust(20).rstrip
     end
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     month_text = months[@month - 1]
     new_final_calendar.unshift("Su Mo Tu We Th Fr Sa")
-    new_final_calendar.unshift("#{month_text} #{year}".center(20))
+    new_final_calendar.unshift("#{month_text} #{year}".center(20).rstrip)
     if new_final_calendar.length == 7
-      new_final_calendar.push("                    ")
+      new_final_calendar.push("\n".center(20).rstrip)
     end
     return new_final_calendar
   end
