@@ -24,7 +24,7 @@ class Month
       month = @month
       year = @year
     end
-    # new construction of the algorithm
+    # Zeller's Congruence for the Gregorian Calendar (http://en.wikipedia.org/wiki/Zeller's_congruence)
     day_on_first_of_month = (1 + ((26 *(month + 1))/10).floor + year + (year/4).floor + (6*(year/100)).floor + (year/400).floor) % 7
     return day_on_first_of_month
   end
@@ -57,8 +57,9 @@ class Month
     rest_of_calendar = (1..month_days).to_a
     calendar += rest_of_calendar
     new_calendar = calendar.each_slice(7).to_a
-    calendar_string = ""
+    final_calendar = []
     new_calendar.each do |row|
+      calendar_string = ""
       row.each do |day|
         if day == 0
           calendar_string += "  "
@@ -69,17 +70,23 @@ class Month
         end
         calendar_string += " "
       end
-      calendar_string += "\n"
+      final_calendar << calendar_string.chomp(" ")
     end
-    return calendar_string
+    new_final_calendar = []
+    final_calendar.each do |line|
+      new_final_calendar << line.ljust(20)
+    end
+    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    month_text = months[@month - 1]
+    new_final_calendar.unshift("Su Mo Tu We Th Fr Sa")
+    new_final_calendar.unshift("#{month_text} #{year}".center(20))
+    if new_final_calendar.length == 7
+      new_final_calendar.push("                    ")
+    end
+    return new_final_calendar
   end
 
   def print_month_to_screen
-    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    month_text = months[@month - 1]
-    title = "#{month_text} #{year}"
-    puts title.center(20)
-    puts "Su Mo Tu We Th Fr Sa"
     puts construct_month
   end
 

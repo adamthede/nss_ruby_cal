@@ -28,19 +28,17 @@ class TestCal < MiniTest::Unit::TestCase
     assert_equal false, leap_year
   end
 
-  def test_print_to_screen
-    new_cal = Month.new(12, 1866)
-    expected_print = <<EOS
-   December 1866
-Su Mo Tu We Th Fr Sa
-                   1
- 2  3  4  5  6  7  8
- 9 10 11 12 13 14 15
-16 17 18 19 20 21 22
-23 24 25 26 27 28 29
-30 31
-EOS
+  def test_print_month_to_screen
+    new_cal = `ruby cal.rb 4 2014`
+    expected_cal = `cal 4 2014`
 
-    assert_equal expected_print, new_cal.print_month_to_screen
+    assert_equal new_cal, expected_cal
+  end
+
+  def test_print_year_to_screen
+    new_cal = `ruby cal.rb 2014`
+    expected_cal = `cal 2014`
+
+    assert_equal new_cal, expected_cal
   end
 end

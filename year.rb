@@ -22,28 +22,16 @@ class Year
     year_screen.each do |item|
       i = 0
       until item[0][i].nil? && item[1][i].nil? && item[2][i].nil?
-=begin
-        if item[0][i].nil? && !item[1][i].nil? && !item[2][i].nil?
-          year_display << "                    " + "  " + item[1][i] + "  " + item[2][i]
-        elsif item[0][i].nil? && item[1][i].nil? && !item[2][i].nil?
-          year_display << "                    " + "  " + "                    " + "  " + item[2][i]
-        elsif item[0][i].nil? && !item[1][i].nil? && item[2][i].nil?
-          year_display << "                    " + "  " + item[1][i] + "  " + "                    "
-        elsif !item[0][i].nil? && item[1][i].nil? && item[2][i].nil?
-          year_display << item[0][i] + "  " + "                    " + "  " + "                    "
-        elsif !item[0][i].nil? && !item[1][i].nil? && item[2][i].nil?
-          year_display << item[0][i] + "  " + item[1][i] + "  " + "                    "
-        else
-=end
-          year_display << item[0][i] + "  " + item[1][i] + "  " + item[2][i]
-        # end
+        year_display << item[0][i] + "  " + item[1][i] + "  " + item[2][i]
         i += 1
       end
     end
     year_display.unshift("\n")
     year_display.unshift("#{@year}".center(62))
-    year_display.each do |item|
-      puts item
-    end
+    return year_display
+  end
+
+  def to_s
+    puts print_year
   end
 end
