@@ -25,8 +25,8 @@ class Month
       year = @year
     end
     # Zeller's Congruence for the Gregorian Calendar (http://en.wikipedia.org/wiki/Zeller's_congruence)
-    day_on_first_of_month = (1 + ((26 *(month + 1))/10).floor + year + (year/4).floor + (6*(year/100)).floor + (year/400).floor) % 7
-    return day_on_first_of_month
+    first_day = (1 + ((26 *(month + 1))/10).floor + year + (year/4).floor + (6*(year/100)).floor + (year/400).floor) % 7
+    return first_day
   end
 
   def leap_year?
@@ -42,113 +42,91 @@ class Month
     return false
   end
 
-  def construct_month
-    month_days = days_in_month
+  def construct_month(print_selector)
+    # create an array of days for the month
+    calendar_month = create_array_of_days
+
+    # prepare an array containing each line of the printed calendar
+    calendar_month_formatted = create_array_for_month(calendar_month)
+
+    # final formatting for the printed calendar
+    calendar_month_final = create_final_month(calendar_month_formatted, print_selector)
+
+    return calendar_month_final
+  end
+
+  def create_array_of_days
     first_day = day_on_first_of_month
+    month_days = days_in_month
     if first_day == 0
-      calendar_fill = 6
+      calendar_start = 6
     else
-      calendar_fill = first_day - 1
+      calendar_start = first_day - 1
     end
     calendar = []
-    calendar_fill.times do
+    calendar_start.times do
       calendar << 0
     end
-    rest_of_calendar = (1..month_days).to_a
-    calendar += rest_of_calendar
+    calendar_end = (1..month_days).to_a
+    calendar += calendar_end
+    return calendar
+  end
+
+  def create_array_for_month(calendar)
     new_calendar = calendar.each_slice(7).to_a
     final_calendar = []
     new_calendar.each do |row|
-      calendar_string = ""
+      calendar_line = ""
       row.each do |day|
         if day == 0
-          calendar_string += "  "
+          calendar_line += "\s\s"
         elsif day < 10
-          calendar_string += (" "+day.to_s)
+          calendar_line += ("\s"+day.to_s)
         else
-          calendar_string += day.to_s
+          calendar_line += day.to_s
         end
-        calendar_string += " "
+        calendar_line += "\s"
       end
-      final_calendar << calendar_string.chomp(" ")
+      final_calendar << calendar_line.chomp("\s")
     end
-    new_final_calendar = []
-    final_calendar.each do |line|
-      new_final_calendar << line.ljust(20).rstrip
+    return final_calendar
+  end
+
+  def create_final_month(calendar_month_formatted, print_selector)
+    formatted_final_calendar = []
+
+    if print_selector == "month"
+      calendar_month_formatted.each do |line|
+        formatted_final_calendar << line.ljust(20).rstrip
+      end
+    elsif print_selector == "year"
+      calendar_month_formatted.each do |line|
+        formatted_final_calendar << line.ljust(20)
+      end
     end
+
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     month_text = months[@month - 1]
-    new_final_calendar.unshift("Su Mo Tu We Th Fr Sa")
-    new_final_calendar.unshift("#{month_text} #{year}".center(20).rstrip)
-    if new_final_calendar.length == 7
-      new_final_calendar.push("\n".center(20).rstrip)
-    elsif new_final_calendar.length == 6
-      new_final_calendar.push("\n".center(20).rstrip)
-      new_final_calendar.push("\n".center(20).rstrip)
+
+    formatted_final_calendar.unshift("Su Mo Tu We Th Fr Sa")
+
+    if print_selector == "month"
+      formatted_final_calendar.unshift("#{month_text} #{year}".center(20).rstrip)
+      until formatted_final_calendar.length == 8
+        formatted_final_calendar.push("\s".center(20).rstrip)
+      end
+    elsif print_selector == "year"
+      formatted_final_calendar.unshift("#{month_text}".center(20))
+      until formatted_final_calendar.length == 8
+        formatted_final_calendar.push("\s".center(20))
+      end
     end
-    return new_final_calendar
+
+    return formatted_final_calendar
   end
 
   def print_month_to_screen
-    puts construct_month
-  end
-
-  def print_month_to_array
-    month_array = []
-    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    month_text = months[@month - 1]
-    title = "#{month_text}"
-    month_array << title.center(20)
-    month_array << "Su Mo Tu We Th Fr Sa"
-    month_array << construct_month
-    return month_array
-  end
-
-  def construct_month_array
-    month_days = days_in_month
-    first_day = day_on_first_of_month
-    if first_day == 0
-      calendar_fill = 6
-    else
-      calendar_fill = first_day - 1
-    end
-    calendar = []
-    calendar_fill.times do
-      calendar << 0
-    end
-    rest_of_calendar = (1..month_days).to_a
-    calendar += rest_of_calendar
-    new_calendar = calendar.each_slice(7).to_a
-    final_calendar = []
-    new_calendar.each do |row|
-      calendar_string = ""
-      row.each do |day|
-        if day == 0
-          calendar_string += "  "
-        elsif day < 10
-          calendar_string += (" "+day.to_s)
-        else
-          calendar_string += day.to_s
-        end
-        calendar_string += " "
-      end
-      final_calendar << calendar_string.chomp(" ")
-    end
-    new_final_calendar = []
-    final_calendar.each do |line|
-      new_final_calendar << line.ljust(20)
-    end
-    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    month_text = months[@month - 1]
-    new_final_calendar.unshift("Su Mo Tu We Th Fr Sa")
-    new_final_calendar.unshift("#{month_text}".center(20))
-    if new_final_calendar.length == 7
-      new_final_calendar.push("                    ")
-    elsif new_final_calendar.length == 6
-      new_final_calendar.push("                    ")
-      new_final_calendar.push("                    ")
-    end
-    return new_final_calendar
+    puts construct_month("month")
   end
 
 end

@@ -1,28 +1,24 @@
 class Year
   require_relative 'month.rb'
 
-  attr_reader :year
-
   def initialize(year)
     @year = year
   end
 
   def construct_year
-    year_display = []
+    year_array = []
     12.times do |i|
-      year_display << Month.new(i+1, @year).construct_month_array
+      year_array << Month.new(i+1, @year).construct_month("year")
     end
-    return year_display
+    return year_array
   end
 
-  def print_year
-    year_screen = construct_year.each_slice(3).to_a
+  def print_year_to_screen
+    year_for_screen = construct_year.each_slice(3).to_a
 
     year_display = []
-    year_screen.each do |item|
-      i = 0
-      until i == 8
-      # until item[0][i].nil? && item[1][i].nil? && item[2][i].nil?
+    year_for_screen.each do |item|
+      8.times do |i|
         year_display << item[0][i] + "  " + item[1][i] + "  " + item[2][i].to_s.rstrip
         i += 1
       end
@@ -33,6 +29,6 @@ class Year
   end
 
   def to_s
-    puts print_year
+    puts print_year_to_screen
   end
 end
