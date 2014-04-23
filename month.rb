@@ -82,6 +82,9 @@ class Month
     new_final_calendar.unshift("#{month_text} #{year}".center(20).rstrip)
     if new_final_calendar.length == 7
       new_final_calendar.push("\n".center(20).rstrip)
+    elsif new_final_calendar.length == 6
+      new_final_calendar.push("\n".center(20).rstrip)
+      new_final_calendar.push("\n".center(20).rstrip)
     end
     return new_final_calendar
   end
@@ -140,6 +143,9 @@ class Month
     new_final_calendar.unshift("Su Mo Tu We Th Fr Sa")
     new_final_calendar.unshift("#{month_text}".center(20))
     if new_final_calendar.length == 7
+      new_final_calendar.push("                    ")
+    elsif new_final_calendar.length == 6
+      new_final_calendar.push("                    ")
       new_final_calendar.push("                    ")
     end
     return new_final_calendar

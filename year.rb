@@ -21,8 +21,9 @@ class Year
     year_display = []
     year_screen.each do |item|
       i = 0
-      until item[0][i].nil? && item[1][i].nil? && item[2][i].nil?
-        year_display << item[0][i] + "  " + item[1][i] + "  " + item[2][i].rstrip
+      until i == 8
+      # until item[0][i].nil? && item[1][i].nil? && item[2][i].nil?
+        year_display << item[0][i] + "  " + item[1][i] + "  " + item[2][i].to_s.rstrip
         i += 1
       end
     end
