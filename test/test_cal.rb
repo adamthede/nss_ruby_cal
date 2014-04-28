@@ -1,5 +1,6 @@
 require_relative 'helper'
-require_relative '../month.rb'
+require_relative '../lib/month.rb'
+require_relative '../lib/year.rb'
 
 class TestCal < MiniTest::Unit::TestCase
 
@@ -41,7 +42,7 @@ class TestCal < MiniTest::Unit::TestCase
 
     assert_equal new_cal, expected_cal
   end
-=begin
+
   def test_print_all_years
     i = 1800
     while i < 3000
@@ -51,5 +52,5 @@ class TestCal < MiniTest::Unit::TestCase
       i += 1
     end
    end
-=end
+
 end

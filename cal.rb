@@ -1,5 +1,5 @@
-require_relative 'month.rb'
-require_relative 'year.rb'
+require_relative 'lib/month.rb'
+require_relative 'lib/year.rb'
 
 if ARGV.length == 1
   if ARGV[0].length > 2
